@@ -35,7 +35,7 @@ public class Main {
             // Kök elementten Company düğümlerini al
             NodeList companyList = doc.getElementsByTagName("Company");
 
-            // Her Company düğümünü işle
+            // Her Company düğümünü istenilen company düğümü ise döndürür.
             for (int i = 0; i < companyList.getLength(); i++) {
                 Element company = (Element) companyList.item(i);
 
@@ -46,32 +46,32 @@ public class Main {
                 // Block düğümlerini al
                 NodeList blockList = company.getElementsByTagName("Block");
 
-                // Her Block düğümünü işle
+                // Her Block düğümünü istenilen block düğümü ise döndürür.
                 for (int j = 0; j < blockList.getLength(); j++) {
                     Element block = (Element) blockList.item(j);
 
-                    // NDC, Prefix ve Size değerlerini al
+                    // NDC, Prefix ve Size değerleri alınır
                     String ndc = block.getElementsByTagName("NDC").item(0).getTextContent();
                     String prefix = block.getElementsByTagName("Prefix").item(0).getTextContent();
                     String size = block.getElementsByTagName("Size").item(0).getTextContent();
 
-                    // Veritabanına ekleme işlemi
+                    // Veritabanına eklenir
                     insertIntoDatabase(connection, companyName, route, ndc, prefix, size);
                 }
             }
 
-            // Bağlantıyı kapat
+            // Bağlantı kapatılır.
             connection.close();
 
         } catch (ParserConfigurationException | IOException | SAXException | SQLException e) {
-            // Hata durumunda loglama yap
+            // Hata durumunda loglama yapar e.printStackTrace() uyarı verdiği için eklendi.
             System.err.println("Veritabanına veri eklenirken hata oluştu:");
             e.printStackTrace();
         }
     }
 
     private static void insertIntoDatabase(Connection connection, String companyName, String route, String ndc, String prefix, String size) throws SQLException {
-        // INSERT sorgusu hazırla
+        // mysql için INSERT sorgusu
         String sql = "INSERT INTO new_schema.prefix_tanimlari (operator, prefix, operator_kodu) VALUES (?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, companyName); // operator sütunu için companyName kullanıldı
