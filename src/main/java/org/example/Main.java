@@ -23,6 +23,7 @@ public class Main {
             String password = "tansu";
 
             Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+            System.out.println("Connection is successful to the database "+jdbcUrl);
 
             File xmlFile = new File("C:\\Users\\Tansu\\IdeaProjects\\PROJE\\src\\operators.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
