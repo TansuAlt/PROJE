@@ -39,22 +39,33 @@ public class Main {
     }
 
     private static void parseAndInsertXML(Connection connection, File xmlFile) throws ParserConfigurationException, IOException, SAXException, SQLException {
+        //yeni bir nesne oluşturduk
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        // belge oluşturucu türü nesneyi döndürecek
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        //DocumentBuilderFactory ve DocumentBuilder soyut sınıfları xml dosyasını okumak için
+        //xml dosyasına doğrudan iletebiliriz,veya xml dosya konumunu belirleriz.
+        //parse metotları ile dosya kaynağı belirtilir xml dosyası belleğe yüklenir.
         Document doc = dBuilder.parse(xmlFile);
+
         doc.getDocumentElement().normalize();
 
         NodeList companyList = doc.getElementsByTagName("Company");
-
+        //buraya kadar tüm alt düğümleri kök ögeden çıkarttık şimdi her bir alt ögeyi okumamız gerekir.
+        //ve sonra her alt düğümden tüm etiketleri ve içerikleri çıkarmak gerekir.
+        //nodeList ile düğümleri yakaladık ama kaç tane düğüm olduğunu getLength ile saydık.
         for (int i = 0; i < companyList.getLength(); i++) {
-            Element company = (Element) companyList.item(i);
 
+            //eğer düğüm belirli düğüme özellikleri aynıysa gibi bişi o zaman alcağımız elementtir diyoruz
+            Element company = (Element) companyList.item(i);
+            //dize dize metin içeriğini aldık
             String companyName = company.getElementsByTagName("CompanyName").item(0).getTextContent();
             String route = company.getElementsByTagName("Route").item(0).getTextContent();
 
             NodeList blockList = company.getElementsByTagName("Block");
-
+            //block alt düğümünün uzunluğu
             for (int j = 0; j < blockList.getLength(); j++) {
+                //eğer düğüm belirli düğüme özellikleri aynıysa gibi bişi o zaman alcağımız elementtir diyoruz
                 Element block = (Element) blockList.item(j);
 
                 String ndc = block.getElementsByTagName("NDC").item(0).getTextContent();
